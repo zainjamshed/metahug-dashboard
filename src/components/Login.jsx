@@ -6,6 +6,7 @@ import {
   Input,
   Checkbox,
   Image,
+  useToast,
 } from "@chakra-ui/react";
 
 import { Wix_Madefor_Display } from "next/font/google";
@@ -14,11 +15,36 @@ const wix_madefor_display = Wix_Madefor_Display({
 });
 
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { useRouter } from "next/router";
+import { useState } from "react";
 const plus_jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 
 const Login = () => {
+  const router = useRouter();
+
+  const toast = useToast(); // Initialize useToast
+
+  // useState hooks for email and password
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Validation function
+  const handleLogin = () => {
+    if (email === "lian@metahug.org" && password === "admin") {
+      router.push("/adminDashboard");
+    } else {
+      toast({
+        title: "Invalid Login",
+        description: "Incorrect email or password",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Flex
       padding="8px 8px"
@@ -28,7 +54,7 @@ const Login = () => {
       background="#f0ff96"
       h={"100vh"}
     >
-      <Image src="metahug.webp" boxSize={"50%"} objectFit={"fill"} />
+      <Image src="metahug.webp" alt="logo" />
       <Flex
         width="592px"
         padding="32px"
@@ -78,8 +104,13 @@ const Login = () => {
               fontWeight="400"
               lineHeight="24px"
               letterSpacing="0.15px"
+              value={email} // Bind value to state
+              onChange={(e) => setEmail(e.target.value)}
             />
             <Input
+              value={password} // Bind value to state
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
               placeholder={"Enter the password"}
               height="48px"
               padding="0px 16px"
@@ -100,20 +131,6 @@ const Login = () => {
             alignItems="center"
             alignSelf="stretch"
           >
-            <Flex alignItems="flex-start" gap="16px">
-              <Checkbox h={"24px"} />
-              <Text
-                color="var(--Input-Label, #686B6E)"
-                className={wix_madefor_display?.className}
-                fontSize="16px"
-                fontStyle="normal"
-                fontWeight="500"
-                lineHeight="24px"
-                letterSpacing="0.15px"
-              >
-                Remember me
-              </Text>
-            </Flex>
             <Text
               color="#5e17eb"
               className={wix_madefor_display?.className}
@@ -133,9 +150,10 @@ const Login = () => {
             alignItems="center"
             gap="12px"
             alignSelf="stretch"
-            background="#5e17eb"
           >
-            <Text
+            <Button
+              w="100%"
+              background="#5e17eb"
               color="#fff"
               className={wix_madefor_display?.className}
               fontSize="16px"
@@ -143,9 +161,11 @@ const Login = () => {
               fontWeight="600"
               lineHeight="24px"
               letterSpacing="0.15px"
+              onClick={handleLogin}
+              _hover={{ bg: "#9363f1" }}
             >
               Log in
-            </Text>
+            </Button>
           </Flex>
         </Flex>
       </Flex>
