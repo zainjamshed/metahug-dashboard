@@ -160,7 +160,9 @@ const AdminTable = () => {
                   </Td>
                   <Td>{item.average_rating.toFixed(2)}</Td>
                   <Td>
-                    <Button onClick={() => router?.push("/project")}>
+                    <Button
+                      onClick={() => router?.push(`/project/${item?.userId}`)}
+                    >
                       Details
                     </Button>
                   </Td>
